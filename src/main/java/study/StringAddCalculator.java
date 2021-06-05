@@ -9,29 +9,31 @@ public class StringAddCalculator {
 
 
     public static int splitAndSum(String input) {
-        if (isEmpty(input)) {
+        if (isEmpty(input)){
             return 0;
         }
 
-        String[] stringNumbers = stringSplit(input);
-
-        return stringSum(stringNumbers);
-    }
-
-    private static String[] stringSplit(String input) {
-        if (input.matches(NUMBER_PATTERN)) {
-            return new String[]{input};
+        if (input.matches(NUMBER_PATTERN)){
+            return Integer.parseInt(input);
         }
+
         Matcher m = Pattern.compile(CUSTOM_PATTERN).matcher(input);
-        if (m.find()) {
+        if (m.find()){
             String customDelimiter = m.group(1);
-            return m.group(2).split(customDelimiter);
+            String[] stringNumbers = m.group(2).split(customDelimiter);
+            return stringSum(stringNumbers);
         }
-        return input.split(",|:");
+
+        if (input.contains(",") || input.contains(";")){
+            String[] stringNumbers = input.split(",|:");
+            return stringSum(stringNumbers);
+        }
+
+        throw new RuntimeException();
     }
 
     private static boolean isEmpty(String input) {
-        if (input == null || input.equals("")) {
+        if (input == null || input == ""){
             return true;
         }
         return false;
